@@ -5,6 +5,8 @@ import com.appetize.model.dto.request.RegisterRequest;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
 import com.appetize.repository.EmpleadoRepository;
+import com.appetize.security.JwtUtils;
+import com.appetize.security.UserDetailsServiceImp;
 import com.appetize.service.abstraction.EmpleadoService;
 import com.appetize.utils.EmailValidator;
 import com.appetize.utils.PasswordValidator;
@@ -12,6 +14,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +31,8 @@ public class EmpleadoServiceImp implements EmpleadoService {
 
     private final EmpleadoRepository empleadoRepository;
     private final PasswordEncoder encoder;
+    private final JwtUtils jwtUtils;
+    private final UserDetailsService userDetailsService;
 
     @Override
     public void register(RegisterRequest request) {
@@ -51,8 +60,32 @@ public class EmpleadoServiceImp implements EmpleadoService {
         empleadoRepository.save(empleado);
     }
 
-//    @Override
-//    public String login(LoginRequest request) {
-//        return "";
-//    }
+    @Override
+    public String login(LoginRequest request) {
+        String cedula = request.getCedula();
+        String contraseña = request.getContraseña();
+
+        if (cedula.isBlank()) {
+            throw new NoSuchElementException("Cédula o contraseña incorrectos");
+        }
+        if (contraseña.isBlank()) {
+            throw new NoSuchElementException("Cédula o contraseña incorrectos");
+        }
+        Authentication authentication = this.authenticate(cedula, contraseña);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return jwtUtils.createToken(authentication);
+    }
+
+    private Authentication authenticate(String email, String password) {
+        UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+
+        if (userDetails == null){
+            throw new IllegalArgumentException("Cédula o contraseña incorrectos");
+        }
+        if (!encoder.matches(password, userDetails.getPassword())){
+            throw new IllegalArgumentException("Cédula o contraseña incorrectos");
+        }
+        return new UsernamePasswordAuthenticationToken(email, userDetails.getPassword(), userDetails.getAuthorities());
+    }
 }

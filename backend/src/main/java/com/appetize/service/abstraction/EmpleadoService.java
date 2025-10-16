@@ -5,5 +5,5 @@ import com.appetize.model.dto.request.RegisterRequest;
 
 public interface EmpleadoService {
     void register (RegisterRequest request);
-//    String login (LoginRequest request);
+    String login (LoginRequest request);
 }

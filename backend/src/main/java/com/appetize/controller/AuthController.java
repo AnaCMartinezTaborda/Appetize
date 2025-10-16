@@ -1,5 +1,6 @@
 package com.appetize.controller;
 
+import com.appetize.model.dto.request.LoginRequest;
 import com.appetize.model.dto.request.RegisterRequest;
 import com.appetize.service.abstraction.EmpleadoService;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final EmpleadoService empleadoService;
+    private final EmpleadoService service;
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest request){
-        empleadoService.register(request);
+        service.register(request);
         return ResponseEntity.ok("Empleado registrado satisfactoriamente");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> register(@RequestBody LoginRequest request){
+        String login = service.login(request);
+        return ResponseEntity.ok(login);
     }
 }
