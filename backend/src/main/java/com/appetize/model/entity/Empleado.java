@@ -3,7 +3,6 @@ package com.appetize.model.entity;
 import com.appetize.model.enums.TipoEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -35,10 +34,6 @@ public class Empleado {
 
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
-
-    @Column(unique = true)
-    @Email(message = "Ingrese un correo electrónico correcto")
-    private String email;
 
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
     @NotBlank(message = "La contraseña no puede estar vacía")
