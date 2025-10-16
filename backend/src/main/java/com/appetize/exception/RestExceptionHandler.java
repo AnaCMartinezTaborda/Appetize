@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 
 @ControllerAdvice
-@RequiredArgsConstructor
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<ErrorResponse> buildResponseEntity(HttpStatus httpStatus, Exception exc){
