@@ -12,6 +12,7 @@ import com.appetize.utils.EmailValidator;
 import com.appetize.utils.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.dao.DuplicateKeyException;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -65,6 +67,8 @@ public class EmpleadoServiceImp implements EmpleadoService {
         String cedula = request.getCedula();
         String contraseña = request.getContraseña();
 
+        Empleado empleado = empleadoRepository.findByCedula(request.getCedula()).orElseThrow( () -> new NoSuchElementException("Cédula o contraseña incorrectos"));
+
         if (cedula.isBlank()) {
             throw new NoSuchElementException("Cédula o contraseña incorrectos");
         }
@@ -74,7 +78,10 @@ public class EmpleadoServiceImp implements EmpleadoService {
         Authentication authentication = this.authenticate(cedula, contraseña);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        empleado.setLastSession(LocalDateTime.now());
+
         return jwtUtils.createToken(authentication);
+
     }
 
     private Authentication authenticate(String email, String password) {

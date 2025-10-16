@@ -26,7 +26,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
     public UserDetails loadUserByUsername(String cedula) throws UsernameNotFoundException {
 
         Empleado empleado = repository.findByCedula(cedula)
-                .orElseThrow(() -> new NoSuchElementException("El usuario con cedula " + cedula + " no existe."));
+                .orElseThrow(() -> new NoSuchElementException("Cedula o contraseña incorrectos"));
 
         List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
 
