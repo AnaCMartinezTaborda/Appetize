@@ -1,0 +1,20 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: appetize
+    container_name: appetize
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_APPLICATION_NAME: appetize
+      MYSQL_URL: ${MYSQL_URL}
+      MYSQL_PORT: ${MYSQL_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      MYSQL_USERNAME: ${MYSQL_USERNAME}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      JWT_KEY: ${JWT_KEY}
+      JWT_USER: ${JWT_USER}
