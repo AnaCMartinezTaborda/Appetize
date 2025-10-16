@@ -5,6 +5,11 @@ COPY pom.xml .
 COPY mvnw .
 COPY .mvn .mvn
 COPY src src
+
+# Dar permisos de ejecución al Maven Wrapper
+RUN chmod +x mvnw
+
+# Compilar el proyecto
 RUN ./mvnw clean package -DskipTests
 
 # Etapa 2: Imagen final solo con JAR
