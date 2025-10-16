@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class LoginRequest {
-    String username;
+    String cedula;
     String contraseña;
 }

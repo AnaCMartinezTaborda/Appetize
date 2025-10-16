@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class RegisterRequest {
     String nombre;
     String cedula;
-    String email;
     String contraseña;
 }
