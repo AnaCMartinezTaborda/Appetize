@@ -11,6 +11,7 @@ public class RestauranteMapper {
         return Restaurante.builder()
                 .nombre(request.getNombre())
                 .email(request.getEmail())
+                .direccion(request.getDireccion())
                 .telefono(request.getTelefono())
                 .build();
     }

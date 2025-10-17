@@ -27,6 +27,8 @@ public class Restaurante {
     @Email(message = "Ingrese un correo electrónico correcto")
     private String email;
 
+    private String direccion;
+
     @NotBlank(message = "El teléfono no puede estar vacío")
     @Pattern(regexp = "^3\\d{9}$", message = "Ingrese un numero de teléfono correcto")
     private String telefono;
