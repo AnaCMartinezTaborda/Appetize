@@ -1,7 +1,7 @@
 package com.appetize.controller;
 
-import com.appetize.model.dto.request.LoginRequest;
-import com.appetize.model.dto.request.RegisterRequest;
+import com.appetize.model.dto.request.auth.LoginRequest;
+import com.appetize.model.dto.request.auth.RegisterRequest;
 import com.appetize.service.abstraction.EmpleadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
