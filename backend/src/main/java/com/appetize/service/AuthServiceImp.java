@@ -1,20 +1,15 @@
 package com.appetize.service;
 
-import com.appetize.model.dto.request.LoginRequest;
-import com.appetize.model.dto.request.RegisterRequest;
+import com.appetize.model.dto.request.auth.LoginRequest;
+import com.appetize.model.dto.request.auth.RegisterRequest;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
 import com.appetize.repository.EmpleadoRepository;
 import com.appetize.security.JwtUtils;
-import com.appetize.security.UserDetailsServiceImp;
-import com.appetize.service.abstraction.EmpleadoService;
-import com.appetize.utils.EmailValidator;
+import com.appetize.service.abstraction.AuthService;
 import com.appetize.utils.PasswordValidator;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.dao.DuplicateKeyException;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,11 +20,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class EmpleadoServiceImp implements EmpleadoService {
+public class AuthServiceImp implements AuthService {
 
     private final EmpleadoRepository empleadoRepository;
     private final PasswordEncoder encoder;
@@ -79,6 +73,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         empleado.setLastSession(LocalDateTime.now());
+        empleadoRepository.save(empleado);
 
         return jwtUtils.createToken(authentication);
 

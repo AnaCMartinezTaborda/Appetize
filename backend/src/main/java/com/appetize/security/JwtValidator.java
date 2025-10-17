@@ -19,11 +19,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collection;
+
 @Component
 @RequiredArgsConstructor
 public class JwtValidator extends OncePerRequestFilter {
 
-    private JwtUtils jwtUtils;
+    private final JwtUtils jwtUtils;
 
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,

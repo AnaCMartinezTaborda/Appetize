@@ -1,4 +1,4 @@
-package com.appetize.model.dto.request;
+package com.appetize.model.dto.request.auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RegisterRequest {
-    String nombre;
+public class LoginRequest {
     String cedula;
     String contraseña;
 }

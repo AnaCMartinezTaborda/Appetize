@@ -20,13 +20,14 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(unique = true)
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
     @Column(unique = true)
     @Email(message = "Ingrese un correo electrónico correcto")
     private String email;
+
+    private String direccion;
 
     @NotBlank(message = "El teléfono no puede estar vacío")
     @Pattern(regexp = "^3\\d{9}$", message = "Ingrese un numero de teléfono correcto")
