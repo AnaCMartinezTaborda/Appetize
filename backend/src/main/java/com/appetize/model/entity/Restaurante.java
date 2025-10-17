@@ -20,7 +20,6 @@ public class Restaurante {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(unique = true)
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
