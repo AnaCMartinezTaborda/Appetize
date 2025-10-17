@@ -73,6 +73,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         empleado.setLastSession(LocalDateTime.now());
+        empleadoRepository.save(empleado);
 
         return jwtUtils.createToken(authentication);
 
