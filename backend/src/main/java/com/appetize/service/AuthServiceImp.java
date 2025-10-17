@@ -6,7 +6,7 @@ import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
 import com.appetize.repository.EmpleadoRepository;
 import com.appetize.security.JwtUtils;
-import com.appetize.service.abstraction.EmpleadoService;
+import com.appetize.service.abstraction.AuthService;
 import com.appetize.utils.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -23,7 +23,7 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
-public class EmpleadoServiceImp implements EmpleadoService {
+public class AuthServiceImp implements AuthService {
 
     private final EmpleadoRepository empleadoRepository;
     private final PasswordEncoder encoder;
