@@ -32,14 +32,12 @@ public class AuthServiceImp implements AuthService {
 
     @Override
     public void register(RegisterRequest request) {
+        if (request.getCedula() == null || request.getCedula().isBlank()) throw new IllegalArgumentException("La cédula no puede estar vacía");
+        if (request.getContraseña() == null || request.getContraseña().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");
+        if (request.getNombre() == null || request.getNombre().isBlank()) throw new IllegalArgumentException("El nombre no puede estar vacío");
+
         boolean isCedulaExist = empleadoRepository.findByCedula(request.getCedula()).isPresent();
 
-
-        if (request.getCedula() == null || request.getCedula().isBlank()) {
-            throw new IllegalArgumentException("La cédula no puede estar vacía");
-        }
-        if (request.getContraseña().isBlank()) throw new NoSuchElementException("La contraseña no puede estar vacía");
-        if (request.getNombre().isBlank()) throw new NoSuchElementException("El nombre no puede estar vacío");
         if (!PasswordValidator.isPasswordValid(request.getContraseña())) throw new IllegalArgumentException(
                 "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
         );

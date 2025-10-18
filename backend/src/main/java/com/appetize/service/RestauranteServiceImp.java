@@ -26,6 +26,10 @@ public class RestauranteServiceImp implements RestauranteService {
 
     @Override
     public void createRestaurante(RestauranteRequest request) {
+        if (request.getNombre() == null || request.getNombre().isBlank()) throw new IllegalArgumentException("El nombre no puede estar vacío");
+        if (request.getEmail() == null || request.getEmail().isBlank()) throw new IllegalArgumentException("El correo electrónico no puede estar vacío");
+        if (request.getTelefono() == null || request.getTelefono().isBlank()) throw new IllegalArgumentException("El teléfono no puede estar vacío");
+
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = empleadoRepository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
 
