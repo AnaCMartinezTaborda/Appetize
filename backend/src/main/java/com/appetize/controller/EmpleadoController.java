@@ -1,14 +1,12 @@
 package com.appetize.controller;
 
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
+import com.appetize.model.dto.response.EmpleadoResponse;
 import com.appetize.service.abstraction.EmpleadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/empleados")
@@ -22,5 +20,11 @@ public class EmpleadoController {
     public ResponseEntity<String> createEmpleado(@RequestBody EmpleadoRequest request){
         service.createEmpleado(request);
         return ResponseEntity.ok("Empleado creado correctamente");
+    }
+
+    @Operation(summary = "Obtiene el empleado de la sesión actual")
+    @GetMapping("/actual")
+    public ResponseEntity<EmpleadoResponse> getPropioEmpleado(){
+        return ResponseEntity.ok(service.getPropioEmpleado());
     }
 }

@@ -1,8 +1,10 @@
 package com.appetize.service;
 
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
+import com.appetize.model.dto.response.EmpleadoResponse;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
+import com.appetize.model.mapper.EmpleadoMapper;
 import com.appetize.repository.EmpleadoRepository;
 import com.appetize.service.abstraction.EmpleadoService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
 
     private final EmpleadoRepository repository;
     private final PasswordEncoder encoder;
+    private final EmpleadoMapper mapper;
 
     @Override
     public void createEmpleado(EmpleadoRequest request) {
@@ -47,7 +50,14 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
-    public Empleado getEmpleado(String id) {
+    public EmpleadoResponse getEmpleado(String id) {
         return null;
+    }
+
+    @Override
+    public EmpleadoResponse getPropioEmpleado(){
+        String cedulaAdmin = SecurityContextHolder.getContext().getAuthentication().getName();
+        Empleado empleado = repository.findByCedula(cedulaAdmin).orElseThrow(() -> new NoSuchElementException("Este administrador no existe"));
+        return mapper.entityToDto(empleado);
     }
 }
