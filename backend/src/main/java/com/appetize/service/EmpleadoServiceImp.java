@@ -30,7 +30,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
         String cedulaAdmin = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = repository.findByCedula(cedulaAdmin).orElseThrow(() -> new NoSuchElementException("Este administrador no existe"));
 
-        boolean isEmpleadoExist = repository.findById(request.getCedula()).isPresent();
+        boolean isEmpleadoExist = repository.findByCedula(request.getCedula()).isPresent();
 
         if (isEmpleadoExist) throw new DuplicateKeyException("La cédula no se encuentra disponible");
 
