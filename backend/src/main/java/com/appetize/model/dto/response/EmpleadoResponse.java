@@ -1,7 +1,7 @@
 package com.appetize.model.dto.response;
 
-import com.appetize.model.entity.Restaurante;
 import com.appetize.model.enums.TipoEnum;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,8 +18,11 @@ public class EmpleadoResponse {
     private TipoEnum tipo;
     private String cedula;
     private String nombre;
-    private Restaurante restaurante;
+    private RestauranteResponse restaurante;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updatedAt;
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime lastSession;
 }

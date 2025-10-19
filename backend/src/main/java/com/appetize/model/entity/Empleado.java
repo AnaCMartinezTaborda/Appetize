@@ -1,7 +1,6 @@
 package com.appetize.model.entity;
 
 import com.appetize.model.enums.TipoEnum;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -44,14 +43,11 @@ public class Empleado {
     private Restaurante restaurante;
 
     @Column(nullable = false, name = "created_at")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updatedAt;
 
     @Column(name = "last_session")
-    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime lastSession;
 }
