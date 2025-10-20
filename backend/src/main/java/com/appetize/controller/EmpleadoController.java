@@ -1,9 +1,11 @@
 package com.appetize.controller;
 
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
+import com.appetize.model.dto.request.empleado.UpdatePasswordRequest;
 import com.appetize.model.dto.response.EmpleadoResponse;
 import com.appetize.service.abstraction.EmpleadoService;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +44,17 @@ public class EmpleadoController {
         return ResponseEntity.ok(service.getEmpleadoById(id));
     }
 
+    @Operation(summary = "El empleado puede actualizar su propia contraseña")
+    @PatchMapping("/updatePasswordActual")
+    public ResponseEntity<String> updatePasswordEmpleadoPropio(@Valid @RequestBody UpdatePasswordRequest request){
+        service.updatePasswordPropia(request);
+        return ResponseEntity.ok("Contraseña cambiada correctamente");
+    }
 
+    @Operation(summary = "El administrador puede actualizar empleados")
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<String> updateEmpleado(@Valid @RequestBody EmpleadoRequest request, @PathVariable String id){
+        service.updateEmpleado(request, id);
+        return ResponseEntity.ok("Empleado actualizado correctamente");
+    }
 }

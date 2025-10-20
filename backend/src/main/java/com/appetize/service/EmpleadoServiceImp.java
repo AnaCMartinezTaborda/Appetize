@@ -1,6 +1,7 @@
 package com.appetize.service;
 
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
+import com.appetize.model.dto.request.empleado.UpdatePasswordRequest;
 import com.appetize.model.dto.response.EmpleadoResponse;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
 
         boolean isEmpleadoExist = repository.findByCedula(request.getCedula()).isPresent();
 
-        if (isEmpleadoExist) throw new DuplicateKeyException("La cédula no se encuentra disponible");
+        if (isEmpleadoExist) throw new DuplicateKeyException("Esta cédula ya está en uso");
 
         Empleado newEmpleado = new Empleado();
 
@@ -64,6 +66,15 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
+    public void updatePasswordPropia(UpdatePasswordRequest request){
+        String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
+        Empleado empleado = repository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("Este empleado no existe"));
+
+        empleado.setPassword(encoder.encode(request.getPassword()));
+        repository.save(empleado);
+    }
+
+    @Override
     public List<EmpleadoResponse> getAllEmpleadosByRestaurante(){
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -75,5 +86,32 @@ public class EmpleadoServiceImp implements EmpleadoService {
         return empleados.stream()
                 .map(mapper::entityToDto)
                 .toList();
+    }
+
+    @Override
+    public void updateEmpleado(EmpleadoRequest request, String id){
+        Empleado empleado = repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
+
+        Optional.ofNullable(request.getNombre())
+                .filter(nombre -> !nombre.isBlank())
+                .ifPresent(empleado::setNombre);
+
+        Optional.ofNullable(request.getCedula())
+                .filter(cedula -> !cedula.isBlank())
+                .ifPresent(cedula -> {
+                    Empleado empleadoConCedula = repository.findByCedula(cedula).orElse(null);
+                    if (empleadoConCedula != null && !empleadoConCedula.getId().equals(id)) {
+                        throw new DuplicateKeyException("Esta cédula ya se encuentra en uso");
+                    }
+                    empleado.setCedula(cedula);
+                });
+
+        Optional.ofNullable(request.getPassword())
+                .filter(p -> !p.isBlank())
+                .ifPresent(p -> empleado.setPassword(encoder.encode(p)));
+
+        empleado.setUpdatedAt(LocalDateTime.now());
+        repository.save(empleado);
     }
 }
