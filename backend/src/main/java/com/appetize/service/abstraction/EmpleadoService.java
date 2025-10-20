@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface EmpleadoService {
     void createEmpleado(EmpleadoRequest request);
-    EmpleadoResponse getEmpleado(String id);
+    EmpleadoResponse getEmpleadoById(String id);
     EmpleadoResponse getPropioEmpleado();
     List<EmpleadoResponse> getAllEmpleadosByRestaurante();
 }

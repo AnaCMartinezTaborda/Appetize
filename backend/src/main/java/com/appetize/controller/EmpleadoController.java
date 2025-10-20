@@ -30,9 +30,17 @@ public class EmpleadoController {
         return ResponseEntity.ok(service.getPropioEmpleado());
     }
 
-    @Operation(summary = "Obtiene todos los empleados de un restaurante")
+    @Operation(summary = "Obtiene todos los empleados del restaurante")
     @GetMapping
     public ResponseEntity<List<EmpleadoResponse>> getAllEmpleadoByRestaurante(){
         return ResponseEntity.ok(service.getAllEmpleadosByRestaurante());
     }
+
+    @Operation(summary = "Obtiene un empleado por su ID")
+    @GetMapping("/{id}")
+    public ResponseEntity<EmpleadoResponse> getEmpleadoById(@PathVariable String id){
+        return ResponseEntity.ok(service.getEmpleadoById(id));
+    }
+
+
 }

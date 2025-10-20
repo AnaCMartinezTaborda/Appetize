@@ -51,8 +51,9 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
-    public EmpleadoResponse getEmpleado(String id) {
-        return null;
+    public EmpleadoResponse getEmpleadoById(String id) {
+        Empleado empleado = repository.findById(id).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
+        return mapper.entityToDto(empleado);
     }
 
     @Override
