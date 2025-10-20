@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/empleados").hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.GET, "/empleados/**").hasRole("ADMINISTRADOR")
                         .requestMatchers(HttpMethod.PATCH, "/empleados/update/**").hasRole("ADMINISTRADOR")
                         .requestMatchers(
                                 "/v3/api-docs/**",

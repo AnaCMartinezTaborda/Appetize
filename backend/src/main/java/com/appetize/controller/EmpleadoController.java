@@ -38,7 +38,7 @@ public class EmpleadoController {
         return ResponseEntity.ok(service.getAllEmpleadosByRestaurante());
     }
 
-    @Operation(summary = "Obtiene un empleado por su ID")
+    @Operation(summary = "El administrador obtiene un empleado por su ID")
     @GetMapping("/{id}")
     public ResponseEntity<EmpleadoResponse> getEmpleadoById(@PathVariable String id){
         return ResponseEntity.ok(service.getEmpleadoById(id));
