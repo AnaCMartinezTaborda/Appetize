@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LoginRequest {
     String cedula;
-    String contraseña;
+    String password;
 }

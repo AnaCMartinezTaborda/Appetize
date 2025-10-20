@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 public class EmpleadoRequest {
     private String nombre;
     private String cedula;
-    private String contraseña;
+    private String password;
 }

@@ -36,7 +36,7 @@ public class Empleado {
 
     @Size(min = 8, message = "La contraseña debe tener mínimo 8 caracteres")
     @NotBlank(message = "La contraseña no puede estar vacía")
-    private String contraseña;
+    private String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_restaurante")
