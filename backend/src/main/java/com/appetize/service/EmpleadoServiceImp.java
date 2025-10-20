@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -27,7 +28,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
     @Override
     public void createEmpleado(EmpleadoRequest request) {
         if (request.getCedula() == null || request.getCedula().isBlank()) throw new IllegalArgumentException("La cédula no puede estar vacía");
-        if (request.getContraseña() == null || request.getContraseña().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");
+        if (request.getPassword() == null || request.getPassword().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");
         if (request.getNombre() == null || request.getNombre().isBlank()) throw new IllegalArgumentException("El nombre no puede estar vacío");
 
         String cedulaAdmin = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -42,7 +43,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
         newEmpleado.setTipo(TipoEnum.COCINERO);
         newEmpleado.setCedula(request.getCedula());
         newEmpleado.setNombre(request.getNombre());
-        newEmpleado.setContraseña(encoder.encode(request.getContraseña()));
+        newEmpleado.setPassword(encoder.encode(request.getPassword()));
         newEmpleado.setRestaurante(empleado.getRestaurante());
         newEmpleado.setCreatedAt(LocalDateTime.now());
 
@@ -59,5 +60,19 @@ public class EmpleadoServiceImp implements EmpleadoService {
         String cedulaAdmin = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = repository.findByCedula(cedulaAdmin).orElseThrow(() -> new NoSuchElementException("Este administrador no existe"));
         return mapper.entityToDto(empleado);
+    }
+
+    @Override
+    public List<EmpleadoResponse> getAllEmpleadosByRestaurante(){
+        String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Empleado empleado = repository.findByCedula(cedula)
+                .orElseThrow(() -> new NoSuchElementException("Empleado administrador no encontrado"));
+
+        List<Empleado> empleados = repository.findByRestauranteId(empleado.getRestaurante().getId());
+
+        return empleados.stream()
+                .map(mapper::entityToDto)
+                .toList();
     }
 }

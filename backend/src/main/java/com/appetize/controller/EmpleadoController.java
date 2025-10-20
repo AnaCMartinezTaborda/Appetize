@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/empleados")
 @RequiredArgsConstructor
@@ -26,5 +28,11 @@ public class EmpleadoController {
     @GetMapping("/actual")
     public ResponseEntity<EmpleadoResponse> getPropioEmpleado(){
         return ResponseEntity.ok(service.getPropioEmpleado());
+    }
+
+    @Operation(summary = "Obtiene todos los empleados de un restaurante")
+    @GetMapping
+    public ResponseEntity<List<EmpleadoResponse>> getAllEmpleadoByRestaurante(){
+        return ResponseEntity.ok(service.getAllEmpleadosByRestaurante());
     }
 }
