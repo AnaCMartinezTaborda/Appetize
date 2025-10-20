@@ -3,6 +3,7 @@ package com.appetize.controller;
 import com.appetize.model.dto.request.auth.LoginRequest;
 import com.appetize.model.dto.request.auth.RegisterRequest;
 import com.appetize.service.abstraction.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,14 @@ public class AuthController {
 
     private final AuthService service;
 
+    @Operation(summary = "Registrar nuevo usuario")
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request){
         service.register(request);
         return ResponseEntity.ok("Empleado registrado satisfactoriamente");
     }
 
+    @Operation(summary = "Iniciar sesión")
     @PostMapping("/login")
     public ResponseEntity<String> register(@Valid @RequestBody LoginRequest request){
         String login = service.login(request);

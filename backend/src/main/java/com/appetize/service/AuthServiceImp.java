@@ -33,12 +33,12 @@ public class AuthServiceImp implements AuthService {
     @Override
     public void register(RegisterRequest request) {
         if (request.getCedula() == null || request.getCedula().isBlank()) throw new IllegalArgumentException("La cédula no puede estar vacía");
-        if (request.getContraseña() == null || request.getContraseña().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");
+        if (request.getPassword() == null || request.getPassword().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");
         if (request.getNombre() == null || request.getNombre().isBlank()) throw new IllegalArgumentException("El nombre no puede estar vacío");
 
         boolean isCedulaExist = empleadoRepository.findByCedula(request.getCedula()).isPresent();
 
-        if (!PasswordValidator.isPasswordValid(request.getContraseña())) throw new IllegalArgumentException(
+        if (!PasswordValidator.isPasswordValid(request.getPassword())) throw new IllegalArgumentException(
                 "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
         );
         if (isCedulaExist) throw new DuplicateKeyException("Esta cédula ya se encuentra en uso");
@@ -48,7 +48,7 @@ public class AuthServiceImp implements AuthService {
         empleado.setTipo(TipoEnum.ADMINISTRADOR);
         empleado.setCedula(request.getCedula());
         empleado.setNombre(request.getNombre());
-        empleado.setContraseña(encoder.encode(request.getContraseña()));
+        empleado.setPassword(encoder.encode(request.getPassword()));
         empleado.setCreatedAt(LocalDateTime.now());
 
         empleadoRepository.save(empleado);
@@ -57,17 +57,17 @@ public class AuthServiceImp implements AuthService {
     @Override
     public String login(LoginRequest request) {
         String cedula = request.getCedula();
-        String contraseña = request.getContraseña();
+        String password = request.getPassword();
 
         Empleado empleado = empleadoRepository.findByCedula(request.getCedula()).orElseThrow( () -> new NoSuchElementException("Cédula o contraseña incorrectos"));
 
         if (cedula.isBlank()) {
             throw new NoSuchElementException("Cédula o contraseña incorrectos");
         }
-        if (contraseña.isBlank()) {
+        if (password.isBlank()) {
             throw new NoSuchElementException("Cédula o contraseña incorrectos");
         }
-        Authentication authentication = this.authenticate(cedula, contraseña);
+        Authentication authentication = this.authenticate(cedula, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         empleado.setLastSession(LocalDateTime.now());

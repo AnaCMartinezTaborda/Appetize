@@ -2,6 +2,7 @@ package com.appetize.controller;
 
 import com.appetize.model.dto.request.restaurante.RestauranteRequest;
 import com.appetize.service.abstraction.RestauranteService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ public class RestauranteController {
 
     private final RestauranteService service;
 
+    @Operation(summary = "Crear un nuevo restaurante")
     @PostMapping
     public ResponseEntity<String> createRestaurante(@Valid @RequestBody RestauranteRequest request){
         service.createRestaurante(request);

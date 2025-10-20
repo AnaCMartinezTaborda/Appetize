@@ -34,7 +34,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
 
         return new User(empleado.getCedula(),
-                empleado.getContraseña(),
+                empleado.getPassword(),
                 authorityList
         );
     }
