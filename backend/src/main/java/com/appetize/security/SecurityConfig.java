@@ -51,10 +51,10 @@ public class SecurityConfig {
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
-                // .exceptionHandling(ex -> ex
-                //         .authenticationEntryPoint(authenticationEntryPoint) // 401
-                //         .accessDeniedHandler(accessDeniedHandler)            // 403
-                // )
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint) // 401
+                        .accessDeniedHandler(accessDeniedHandler)            // 403
+                )
                 .addFilterBefore(jwtValidator, UsernamePasswordAuthenticationFilter.class)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .build();
