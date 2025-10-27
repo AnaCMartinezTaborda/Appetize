@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -55,4 +56,57 @@ public class RestauranteServiceImp implements RestauranteService {
         empleado.setRestaurante(restaurante);
         empleadoRepository.save(empleado);
     }
+
+    @Override
+    public Restaurante getCurrentRestaurante() {
+        String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
+        Empleado empleado = empleadoRepository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
+
+        return empleado.getRestaurante();
+    }
+
+    @Override
+    public void updateRestaurante(RestauranteRequest request) {
+        String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
+        Empleado empleado = empleadoRepository.findByCedula(cedula)
+                .orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
+
+        Restaurante restaurante = empleado.getRestaurante();
+
+        Optional.ofNullable(request.getNombre())
+                .filter(nombre -> !nombre.isBlank())
+                .ifPresent(restaurante::setNombre);
+
+        Optional.ofNullable(request.getEmail())
+                .filter(email -> !email.isBlank())
+                .ifPresent(email -> {
+                    if (!EmailValidator.isEmailValid(email)) {
+                        throw new IllegalArgumentException("El correo electrónico no es válido");
+                    }
+                    // Verificar si ya existe otro restaurante con ese email
+                    boolean exists = restauranteRepository.findByEmail(email)
+                            .filter(r -> !r.getId().equals(restaurante.getId()))
+                            .isPresent();
+                    if (exists) {
+                        throw new DuplicateKeyException("El correo electrónico ya está en uso");
+                    }
+                    restaurante.setEmail(email);
+                });
+
+        Optional.ofNullable(request.getDireccion())
+                .filter(direccion -> !direccion.isBlank())
+                .ifPresent(restaurante::setDireccion);
+
+        Optional.ofNullable(request.getTelefono())
+                .filter(telefono -> !telefono.isBlank())
+                .ifPresent(telefono -> {
+                    if (!PhoneValidator.isPhoneValid(telefono)) {
+                        throw new IllegalArgumentException("El número de teléfono no es válido");
+                    }
+                    restaurante.setTelefono(telefono);
+                });
+
+        restauranteRepository.save(restaurante);
+    }
+
 }

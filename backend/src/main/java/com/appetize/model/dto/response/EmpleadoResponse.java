@@ -19,10 +19,13 @@ public class EmpleadoResponse {
     private String cedula;
     private String nombre;
     private RestauranteResponse restaurante;
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime createdAt;
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime updatedAt;
+
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime lastSession;
 }

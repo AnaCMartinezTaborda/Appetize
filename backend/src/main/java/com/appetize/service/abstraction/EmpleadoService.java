@@ -3,6 +3,7 @@ package com.appetize.service.abstraction;
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
 import com.appetize.model.dto.request.empleado.UpdatePasswordRequest;
 import com.appetize.model.dto.response.EmpleadoResponse;
+import com.appetize.model.entity.Restaurante;
 
 import java.util.List;
 

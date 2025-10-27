@@ -1,5 +1,6 @@
 package com.appetize.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity(name = "restaurantes")
 @Data
@@ -32,4 +35,13 @@ public class Restaurante {
     @NotBlank(message = "El teléfono no puede estar vacío")
     @Pattern(regexp = "^3\\d{9}$", message = "Ingrese un numero de teléfono correcto")
     private String telefono;
+
+
+    @Column(nullable = false, name = "created_at")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
+    private LocalDateTime updatedAt;
 }
