@@ -8,6 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface RestauranteRepository extends JpaRepository<Restaurante, String> {
-    Optional<Restaurante> findByNombre(String nombre);
-    Optional<Object> findByEmail(String email);
+    Optional<Restaurante> findByEmail(String email);
 }
