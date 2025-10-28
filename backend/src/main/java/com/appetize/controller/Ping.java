@@ -12,7 +12,8 @@ public class Ping {
 
     @Operation(summary = "endpoint para mantener vivo el deploy")
     @GetMapping
-    public ResponseEntity<String> ping(){
-        return ResponseEntity.ok("pong");
+    public ResponseEntity<?> ping(){
+        System.out.println("Ping Recibido");
+        return ResponseEntity.ok().build();
     }
 }
