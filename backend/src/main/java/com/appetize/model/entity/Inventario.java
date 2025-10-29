@@ -28,7 +28,16 @@ public class Inventario {
     private String nombre;
 
     private BigDecimal cantidad;
-    private BigDecimal precioUnitario;
+
+    @Column(nullable = false)
+    private BigDecimal cantidadHistorica = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    private BigDecimal costoHistorico = BigDecimal.ZERO;
+
+    @Column(nullable = false)
+    private BigDecimal costoUnitario = BigDecimal.ZERO;
+
 
     @Enumerated(EnumType.STRING)
     private TipoInventarioEnum tipoInventario;
