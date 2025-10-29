@@ -10,12 +10,14 @@ public class EmpleadoMapper {
 
     public EmpleadoResponse entityToDto(Empleado entity){
 
-        RestauranteResponse restaurante =RestauranteResponse.builder()
+        RestauranteResponse restaurante = RestauranteResponse.builder()
                 .id(entity.getRestaurante().getId())
                 .nombre(entity.getRestaurante().getNombre())
                 .email(entity.getRestaurante().getEmail())
                 .direccion(entity.getRestaurante().getDireccion())
                 .telefono(entity.getRestaurante().getTelefono())
+                .createdAt(entity.getRestaurante().getCreatedAt())
+                .updatedAt(entity.getRestaurante().getUpdatedAt())
                 .build();
 
         return EmpleadoResponse.builder()

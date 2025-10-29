@@ -54,6 +54,7 @@ public class RestauranteServiceImp implements RestauranteService {
         }
 
         Restaurante restaurante = restauranteMapper.requestToEntity(request);
+
         restaurante.setCreatedAt(LocalDateTime.now());
         restauranteRepository.save(restaurante);
         empleado.setRestaurante(restaurante);
