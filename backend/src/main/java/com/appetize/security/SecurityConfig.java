@@ -43,6 +43,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "ping").permitAll()
                         .requestMatchers("/empleados/**").hasRole("ADMINISTRADOR")
                         .requestMatchers("/restaurante/**").hasRole("ADMINISTRADOR")
+                        .requestMatchers(HttpMethod.POST, "/inventario").hasRole("ADMINISTRADOR")
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
@@ -68,7 +69,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(UserDetailsServiceImp userDetailsService){
+    public AuthenticationProvider authenticationProvider(UserDetailsServiceImp userDetailsService) {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService);
@@ -76,7 +77,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
