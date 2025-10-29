@@ -1,6 +1,7 @@
 package com.appetize.service;
 
 import com.appetize.model.dto.request.restaurante.RestauranteRequest;
+import com.appetize.model.dto.response.RestauranteResponse;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.entity.Restaurante;
 import com.appetize.model.mapper.RestauranteMapper;
@@ -14,6 +15,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -52,17 +54,18 @@ public class RestauranteServiceImp implements RestauranteService {
         }
 
         Restaurante restaurante = restauranteMapper.requestToEntity(request);
+        restaurante.setCreatedAt(LocalDateTime.now());
         restauranteRepository.save(restaurante);
         empleado.setRestaurante(restaurante);
         empleadoRepository.save(empleado);
     }
 
     @Override
-    public Restaurante getCurrentRestaurante() {
+    public RestauranteResponse getCurrentRestaurante() {
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = empleadoRepository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
 
-        return empleado.getRestaurante();
+        return restauranteMapper.entityToDto(empleado.getRestaurante());
     }
 
     @Override
@@ -83,7 +86,6 @@ public class RestauranteServiceImp implements RestauranteService {
                     if (!EmailValidator.isEmailValid(email)) {
                         throw new IllegalArgumentException("El correo electrónico no es válido");
                     }
-                    // Verificar si ya existe otro restaurante con ese email
                     boolean exists = restauranteRepository.findByEmail(email)
                             .filter(r -> !r.getId().equals(restaurante.getId()))
                             .isPresent();
@@ -106,6 +108,7 @@ public class RestauranteServiceImp implements RestauranteService {
                     restaurante.setTelefono(telefono);
                 });
 
+        restaurante.setUpdatedAt(LocalDateTime.now());
         restauranteRepository.save(restaurante);
     }
 
