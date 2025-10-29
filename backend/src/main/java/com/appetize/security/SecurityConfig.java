@@ -41,9 +41,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "ping").permitAll()
-                        .requestMatchers("/empleados/**").hasRole("ADMINISTRADOR")
-                        .requestMatchers("/restaurante/**").hasRole("ADMINISTRADOR")
-                        .requestMatchers(HttpMethod.POST, "/inventario").hasRole("ADMINISTRADOR")
+                        //acomodar endpoints al final
+//                        .requestMatchers("/empleados/**").hasRole("ADMINISTRADOR")
+//                        .requestMatchers("/restaurante/**").hasRole("ADMINISTRADOR")
+//                        .requestMatchers("/compras/**").hasRole("ADMINISTRADOR")
+//                        .requestMatchers(HttpMethod.POST, "/inventario").hasRole("ADMINISTRADOR")
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
