@@ -19,7 +19,7 @@ public class AuthController {
 
     private final AuthService service;
 
-    @Operation(summary = "Registrar nuevo usuario")
+    @Operation(summary = "Registrar nuevo usuario Administrador")
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request){
         service.register(request);

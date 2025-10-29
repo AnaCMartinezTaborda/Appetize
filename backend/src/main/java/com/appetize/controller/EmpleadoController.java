@@ -19,7 +19,7 @@ public class EmpleadoController {
 
     private final EmpleadoService service;
 
-    @Operation(summary = "Crear un nuevo empleado")
+    @Operation(summary = "El Administrador puede crear un nuevo empleado")
     @PostMapping
     public ResponseEntity<String> createEmpleado(@RequestBody EmpleadoRequest request){
         service.createEmpleado(request);
@@ -32,7 +32,7 @@ public class EmpleadoController {
         return ResponseEntity.ok(service.getPropioEmpleado());
     }
 
-    @Operation(summary = "Obtiene todos los empleados del restaurante")
+    @Operation(summary = "El Administrador obtiene todos los empleados del restaurante")
     @GetMapping
     public ResponseEntity<List<EmpleadoResponse>> getAllEmpleadoByRestaurante(){
         return ResponseEntity.ok(service.getAllEmpleadosByRestaurante());
@@ -51,7 +51,7 @@ public class EmpleadoController {
         return ResponseEntity.ok("Contraseña cambiada correctamente");
     }
 
-    @Operation(summary = "El administrador puede actualizar empleados")
+    @Operation(summary = "El Administrador puede actualizar empleados")
     @PatchMapping("/update/{id}")
     public ResponseEntity<String> updateEmpleado(@Valid @RequestBody EmpleadoRequest request, @PathVariable String id){
         service.updateEmpleado(request, id);

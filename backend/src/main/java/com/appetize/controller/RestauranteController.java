@@ -17,7 +17,7 @@ public class RestauranteController {
 
     private final RestauranteService service;
 
-    @Operation(summary = "Crear un nuevo restaurante")
+    @Operation(summary = "El Administrador crea un nuevo restaurante")
     @PostMapping
     public ResponseEntity<String> createRestaurante(@Valid @RequestBody RestauranteRequest request){
         service.createRestaurante(request);

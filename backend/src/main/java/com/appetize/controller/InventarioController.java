@@ -23,7 +23,7 @@ public class InventarioController {
         return ResponseEntity.ok("Nuevo producto de inventario creado");
     }
 
-    @Operation(summary = "El administrador obtiene productos del inventario por su nombre")
+    @Operation(summary = "El administrador obtiene productos del inventario por coincidencia de nombre")
     @GetMapping("/search")
     public ResponseEntity<List<InventarioResponse>> getInventarioByNombre(@RequestParam String nombre){
         return ResponseEntity.ok(service.getInventarioByNombre(nombre));
