@@ -51,7 +51,10 @@ public class RestauranteServiceImp implements RestauranteService {
             throw new IllegalStateException("El empleado ya tiene un restaurante asociado");
         }
 
+        
         Restaurante restaurante = restauranteMapper.requestToEntity(request);
+
+        restaurante.setCreatedAt(LocalDateTime.now());
         restauranteRepository.save(restaurante);
         empleado.setRestaurante(restaurante);
         empleadoRepository.save(empleado);
