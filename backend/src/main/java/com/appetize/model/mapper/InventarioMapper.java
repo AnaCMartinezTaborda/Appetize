@@ -9,18 +9,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class InventarioMapper {
 
-    private final RestauranteMapper restauranteMapper;
-
     public InventarioResponse entityToDto(Inventario entity){
         return InventarioResponse.builder()
                 .id(entity.getId())
                 .idExterno(entity.getIdExterno())
                 .nombre(entity.getNombre())
                 .cantidad(entity.getCantidad())
-                .precioUnitario(entity.getCostoUnitario())
+                .costoUnitario(entity.getCostoUnitario())
                 .tipoInventario(entity.getTipoInventario())
                 .unidadMedida(entity.getUnidadMedida())
-                .restaurante(restauranteMapper.entityToDto(entity.getRestaurante()))
                 .build();
     }
 }
