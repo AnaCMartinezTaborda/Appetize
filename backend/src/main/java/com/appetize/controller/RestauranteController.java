@@ -1,6 +1,7 @@
 package com.appetize.controller;
 
 import com.appetize.model.dto.request.restaurante.RestauranteRequest;
+import com.appetize.model.dto.response.RestauranteResponse;
 import com.appetize.model.entity.Restaurante;
 import com.appetize.service.abstraction.RestauranteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,7 +17,7 @@ public class RestauranteController {
 
     private final RestauranteService service;
 
-    @Operation(summary = "Crear un nuevo restaurante")
+    @Operation(summary = "El Administrador crea un nuevo restaurante")
     @PostMapping
     public ResponseEntity<String> createRestaurante(@Valid @RequestBody RestauranteRequest request){
         service.createRestaurante(request);
@@ -25,7 +26,7 @@ public class RestauranteController {
 
     @Operation(summary = "El Administrador obtiene el restaurante")
     @GetMapping
-    public ResponseEntity<Restaurante> getCurrentRestaurante(){
+    public ResponseEntity<RestauranteResponse> getCurrentRestaurante(){
         return ResponseEntity.ok(service.getCurrentRestaurante());
     }
 
