@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -28,6 +29,7 @@ public class RestauranteServiceImp implements RestauranteService {
     private final RestauranteMapper restauranteMapper;
 
     @Override
+    @Transactional
     public void createRestaurante(RestauranteRequest request) {
         if (request.getNombre() == null || request.getNombre().isBlank()) throw new IllegalArgumentException("El nombre no puede estar vacío");
         if (request.getEmail() == null || request.getEmail().isBlank()) throw new IllegalArgumentException("El correo electrónico no puede estar vacío");
@@ -70,6 +72,7 @@ public class RestauranteServiceImp implements RestauranteService {
     }
 
     @Override
+    @Transactional
     public void updateRestaurante(RestauranteRequest request) {
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = empleadoRepository.findByCedula(cedula)
@@ -112,5 +115,4 @@ public class RestauranteServiceImp implements RestauranteService {
         restaurante.setUpdatedAt(LocalDateTime.now());
         restauranteRepository.save(restaurante);
     }
-
 }

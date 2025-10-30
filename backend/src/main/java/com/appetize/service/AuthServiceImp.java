@@ -17,6 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
@@ -31,6 +33,7 @@ public class AuthServiceImp implements AuthService {
     private final UserDetailsService userDetailsService;
 
     @Override
+    @Transactional
     public void register(RegisterRequest request) {
         if (request.getCedula() == null || request.getCedula().isBlank()) throw new IllegalArgumentException("La cédula no puede estar vacía");
         if (request.getPassword() == null || request.getPassword().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");

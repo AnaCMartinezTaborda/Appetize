@@ -5,12 +5,12 @@ import com.appetize.model.dto.response.CompraResponse;
 import com.appetize.service.abstraction.CompraService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequestMapping("/compras")
@@ -38,15 +38,14 @@ public class CompraController {
         return ResponseEntity.ok(service.getCompraByIdExterno(idExterno));
     }
 
-    @Operation(summary = "El Administrador obtiene las compras y puede buscar por rango de fecha")
-    @GetMapping("")
-    public ResponseEntity<List<CompraResponse>> getAllcompras(
-            @RequestParam(required = false)
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime desde,
-
-            @RequestParam(required = false)
-            @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime hasta
+    @Operation(summary = "El Administrador obtiene las compras con paginación y rango de fecha")
+    @GetMapping("/paged")
+    public ResponseEntity<Page<CompraResponse>> getAllComprasPaged(
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime desde,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime hasta,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        return ResponseEntity.ok(service.getAllCompras(desde, hasta));
+        return ResponseEntity.ok(service.getAllComprasPaged(desde, hasta, page, size));
     }
 }

@@ -9,8 +9,14 @@ import com.appetize.repository.EmpleadoRepository;
 import com.appetize.repository.InventarioRepository;
 import com.appetize.service.abstraction.CompraService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -29,6 +35,7 @@ public class CompraServiceImp implements CompraService {
     private final CompraMapper compraMapper;
 
     @Override
+    @Transactional
     public void createCompra(CompraRequest request) {
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = empleadoRepository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
@@ -92,26 +99,20 @@ public class CompraServiceImp implements CompraService {
     }
 
     @Override
-    public List<CompraResponse> getAllCompras(LocalDateTime desde, LocalDateTime hasta) {
+    public Page<CompraResponse> getAllComprasPaged(LocalDateTime desde, LocalDateTime hasta, int page, int size) {
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
-        Empleado empleado = empleadoRepository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
-        String restauranteId = empleado.getRestaurante().getId();
+        Empleado empleado = empleadoRepository.findByCedula(cedula)
+                .orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
 
-        List<Compra> compras;
+        Pageable pageable = PageRequest.of(page, size, Sort.by("fechaCompra").descending());
+        Page<Compra> comprasPage;
 
-        if (desde != null && hasta == null) {
-            hasta = LocalDateTime.now();
-            compras = compraRepository.findByFechaCompraBetweenAndRestaurante(desde, hasta, restauranteId);
+        if (desde != null && hasta != null) {
+            comprasPage = compraRepository.findByFechaCompraBetweenAndRestaurante(desde, hasta, empleado.getRestaurante().getId(), pageable);
+        } else {
+            comprasPage = compraRepository.findAllByRestauranteId(empleado.getRestaurante().getId(), pageable);
         }
 
-        else if (desde != null && hasta != null) {
-            compras = compraRepository.findByFechaCompraBetweenAndRestaurante(desde, hasta, restauranteId);
-        }
-
-        else {
-            compras = compraRepository.findAllByRestauranteId(restauranteId);
-        }
-
-        return compraMapper.entityListToDtoList(compras);
+        return comprasPage.map(compraMapper::entityToDto);
     }
 }

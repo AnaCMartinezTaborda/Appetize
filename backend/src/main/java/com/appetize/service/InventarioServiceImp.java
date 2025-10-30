@@ -11,10 +11,10 @@ import com.appetize.service.abstraction.InventarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,7 @@ public class InventarioServiceImp implements InventarioService {
     private final InventarioMapper inventarioMapper;
 
     @Override
+    @Transactional
     public void createInventario(InventarioRequest request){
 
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
