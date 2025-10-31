@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface InventarioRepository extends JpaRepository<Inventario, Long> {
+public interface InventarioRepository extends JpaRepository<Inventario, String> {
 
     @Query("SELECT COALESCE(MAX(c.idExterno), 0) FROM inventario c WHERE c.restaurante.id = :restauranteId")
     Optional<Long> findMaxIdExternoByRestaurante(@Param("restauranteId") String restauranteId);

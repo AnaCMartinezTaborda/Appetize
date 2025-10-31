@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder
 public class InventarioResponse {
-    private Long id;
+    private String id;
     private Long idExterno;
     private String nombre;
     private BigDecimal cantidad;
