@@ -8,6 +8,7 @@ import com.appetize.model.enums.TipoEnum;
 import com.appetize.model.mapper.EmpleadoMapper;
 import com.appetize.repository.EmpleadoRepository;
 import com.appetize.service.abstraction.EmpleadoService;
+import com.appetize.utils.PasswordValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
@@ -74,6 +75,9 @@ public class EmpleadoServiceImp implements EmpleadoService {
     @Override
     @Transactional
     public void updatePasswordPropia(UpdatePasswordRequest request){
+        if (!PasswordValidator.isPasswordValid(request.getPassword())) throw new IllegalArgumentException(
+                "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+        );
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = repository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("Este empleado no existe"));
 
@@ -99,6 +103,9 @@ public class EmpleadoServiceImp implements EmpleadoService {
     @Override
     @Transactional
     public void updateEmpleado(EmpleadoRequest request, String id){
+        if (!PasswordValidator.isPasswordValid(request.getPassword())) throw new IllegalArgumentException(
+                "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+        );
         Empleado empleado = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
 
