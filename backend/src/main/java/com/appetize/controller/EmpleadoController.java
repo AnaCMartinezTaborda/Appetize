@@ -7,6 +7,7 @@ import com.appetize.service.abstraction.EmpleadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,10 +33,15 @@ public class EmpleadoController {
         return ResponseEntity.ok(service.getPropioEmpleado());
     }
 
-    @Operation(summary = "El Administrador obtiene todos los empleados del restaurante")
-    @GetMapping
-    public ResponseEntity<List<EmpleadoResponse>> getAllEmpleadoByRestaurante(){
-        return ResponseEntity.ok(service.getAllEmpleadosByRestaurante());
+    @Operation(summary = "El Administrador obtiene todos los empleados del restaurante con paginación")
+    @GetMapping("/paged")
+    public ResponseEntity<Page<EmpleadoResponse>> getAllEmpleadoByRestaurantePaged(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        if (page < 0) page = 0;
+        if (size <= 0) size = 10;
+        return ResponseEntity.ok(service.getAllEmpleadosByRestaurantePaged(page, size));
     }
 
     @Operation(summary = "El administrador obtiene un empleado por su ID")

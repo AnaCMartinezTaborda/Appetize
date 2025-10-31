@@ -11,10 +11,10 @@ import com.appetize.service.abstraction.InventarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -25,24 +25,40 @@ public class InventarioServiceImp implements InventarioService {
     private final InventarioMapper inventarioMapper;
 
     @Override
-    public void createInventario(InventarioRequest request){
+    @Transactional
+    public void createInventario(InventarioRequest request) {
+        if (request.getNombre() == null || request.getNombre().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del inventario es obligatorio.");
+        }
+        if (request.getTipoInventario() == null) {
+            throw new IllegalArgumentException("El tipo de inventario es obligatorio.");
+        }
+        if (request.getUnidadMedida() == null) {
+            throw new IllegalArgumentException("La unidad de medida es obligatoria.");
+        }
 
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
-        Empleado empleado = empleadoRepository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
+        Empleado empleado = empleadoRepository.findByCedula(cedula)
+                .orElseThrow(() -> new NoSuchElementException("El empleado no existe."));
 
-        Inventario inventario = new Inventario();
+        if (empleado.getRestaurante() == null) {
+            throw new IllegalStateException("El empleado no tiene un restaurante asociado.");
+        }
 
+        boolean existe = inventarioRepository.existsByNombreIgnoreCaseAndRestauranteId(
+                request.getNombre().trim(),
+                empleado.getRestaurante().getId()
+        );
+
+        if (existe) {
+            throw new IllegalArgumentException("Ya existe un inventario con ese nombre en este restaurante.");
+        }
+
+        Inventario inventario = inventarioMapper.dtoToEntity(request);
         inventario.setRestaurante(empleado.getRestaurante());
-
-        Long maxIdExterno = inventarioRepository.findMaxIdExternoByRestaurante(empleado.getRestaurante().getId()).orElse(0L);
-        inventario.setIdExterno(maxIdExterno + 1L);
-
-        inventario.setTipoInventario(request.getTipoInventario());
-        inventario.setUnidadMedida(request.getUnidadMedida());
-        inventario.setNombre(request.getNombre());
-
         inventarioRepository.save(inventario);
     }
+
 
     public List<InventarioResponse> getInventarioByNombre(String nombre){
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();

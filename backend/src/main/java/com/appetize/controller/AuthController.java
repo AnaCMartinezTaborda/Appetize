@@ -28,7 +28,7 @@ public class AuthController {
 
     @Operation(summary = "Iniciar sesión")
     @PostMapping("/login")
-    public ResponseEntity<String> register(@Valid @RequestBody LoginRequest request){
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request){
         String login = service.login(request);
         return ResponseEntity.ok(login);
     }

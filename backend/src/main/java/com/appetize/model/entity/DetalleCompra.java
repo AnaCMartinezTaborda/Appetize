@@ -20,6 +20,9 @@ public class DetalleCompra {
     private Long id;
 
     @Column(nullable = false)
+    private BigDecimal cantidad;
+
+    @Column(nullable = false)
     private BigDecimal costo;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

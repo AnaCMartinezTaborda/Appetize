@@ -16,4 +16,6 @@ public interface InventarioRepository extends JpaRepository<Inventario, Long> {
     Optional<Long> findMaxIdExternoByRestaurante(@Param("restauranteId") String restauranteId);
 
     List<Inventario> findByRestauranteIdAndNombreContainingIgnoreCase(String restauranteId, String nombre);
+
+    boolean existsByNombreIgnoreCaseAndRestauranteId(String nombre, String restauranteId);
 }
