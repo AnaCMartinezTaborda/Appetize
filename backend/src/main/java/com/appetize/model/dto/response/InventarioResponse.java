@@ -18,8 +18,7 @@ public class InventarioResponse {
     private Long idExterno;
     private String nombre;
     private BigDecimal cantidad;
-    private BigDecimal precioUnitario;
+    private BigDecimal costoUnitario;
     private TipoInventarioEnum tipoInventario;
     private UnidadMedidaEnum unidadMedida;
-    private RestauranteResponse restaurante;
 }

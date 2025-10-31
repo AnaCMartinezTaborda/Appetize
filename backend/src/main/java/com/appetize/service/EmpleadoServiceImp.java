@@ -10,12 +10,17 @@ import com.appetize.repository.EmpleadoRepository;
 import com.appetize.service.abstraction.EmpleadoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -28,6 +33,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
     private final EmpleadoMapper mapper;
 
     @Override
+    @Transactional
     public void createEmpleado(EmpleadoRequest request) {
         if (request.getCedula() == null || request.getCedula().isBlank()) throw new IllegalArgumentException("La cédula no puede estar vacía");
         if (request.getPassword() == null || request.getPassword().isBlank()) throw new IllegalArgumentException("La contraseña no puede estar vacía");
@@ -66,6 +72,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
+    @Transactional
     public void updatePasswordPropia(UpdatePasswordRequest request){
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
         Empleado empleado = repository.findByCedula(cedula).orElseThrow(() -> new NoSuchElementException("Este empleado no existe"));
@@ -75,20 +82,22 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
-    public List<EmpleadoResponse> getAllEmpleadosByRestaurante(){
+    public Page<EmpleadoResponse> getAllEmpleadosByRestaurantePaged(int page, int size) {
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Empleado empleado = repository.findByCedula(cedula)
                 .orElseThrow(() -> new NoSuchElementException("Empleado administrador no encontrado"));
 
-        List<Empleado> empleados = repository.findByRestauranteId(empleado.getRestaurante().getId());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("nombre").ascending());
 
-        return empleados.stream()
-                .map(mapper::entityToDto)
-                .toList();
+        Page<Empleado> empleadosPage = repository.findByRestauranteId(empleado.getRestaurante().getId(), pageable);
+
+        return empleadosPage.map(mapper::entityToDto);
     }
 
+
     @Override
+    @Transactional
     public void updateEmpleado(EmpleadoRequest request, String id){
         Empleado empleado = repository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("El empleado no existe"));

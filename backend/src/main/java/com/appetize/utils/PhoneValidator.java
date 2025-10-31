@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class PhoneValidator {
 
-    private PhoneValidator() {} // Evita instanciación
+    private PhoneValidator() {}
 
     public static boolean isPhoneValid(String telefono) {
         String phoneRegex = "^3\\d{9}$";
