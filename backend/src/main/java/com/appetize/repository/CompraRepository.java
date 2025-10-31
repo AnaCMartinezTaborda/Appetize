@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Repository
-public interface CompraRepository extends JpaRepository<Compra, Long> {
+public interface CompraRepository extends JpaRepository<Compra, String> {
 
     @Query("SELECT COALESCE(MAX(c.idExterno), 0) FROM compras c WHERE c.restaurante.id = :restauranteId")
     Optional<Long> findMaxIdExternoByRestaurante(@Param("restauranteId") String restauranteId);

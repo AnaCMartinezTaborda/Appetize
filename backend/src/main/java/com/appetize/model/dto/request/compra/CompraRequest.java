@@ -36,7 +36,7 @@ public class CompraRequest {
     @Builder
     public static class DetalleCompraRequest {
         @NotNull(message = "El id del inventario no puede estar vacío")
-        private Long inventarioId;
+        private String inventarioId;
 
         @NotNull(message = "La cantidad no puede ser nula")
         @Positive(message = "La cantidad debe ser mayor a 0")
