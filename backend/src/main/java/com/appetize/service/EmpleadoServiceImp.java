@@ -3,6 +3,7 @@ package com.appetize.service;
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
 import com.appetize.model.dto.request.empleado.UpdatePasswordRequest;
 import com.appetize.model.dto.response.EmpleadoResponse;
+import com.appetize.model.dto.response.PaginatedResponse;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
 import com.appetize.model.mapper.EmpleadoMapper;
@@ -82,7 +83,7 @@ public class EmpleadoServiceImp implements EmpleadoService {
     }
 
     @Override
-    public Page<EmpleadoResponse> getAllEmpleadosByRestaurantePaged(int page, int size) {
+    public PaginatedResponse<EmpleadoResponse> getAllEmpleadosByRestaurantePaged(int page, int size) {
         String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
 
         Empleado empleado = repository.findByCedula(cedula)
@@ -92,7 +93,15 @@ public class EmpleadoServiceImp implements EmpleadoService {
 
         Page<Empleado> empleadosPage = repository.findByRestauranteId(empleado.getRestaurante().getId(), pageable);
 
-        return empleadosPage.map(mapper::entityToDto);
+        return new PaginatedResponse<>(
+                empleadosPage.getNumber() + 1,
+                empleadosPage.getSize(),
+                empleadosPage.getTotalElements(),
+                empleadosPage.getTotalPages(),
+                empleadosPage.getContent().stream()
+                        .map(mapper::entityToDto)
+                        .toList()
+        );
     }
 
 
