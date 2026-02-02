@@ -2,6 +2,7 @@ package com.appetize.controller;
 
 import com.appetize.model.dto.request.auth.LoginRequest;
 import com.appetize.model.dto.request.auth.RegisterRequest;
+import com.appetize.model.dto.response.LoginResponse;
 import com.appetize.service.abstraction.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -23,13 +24,13 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request){
         service.register(request);
-        return ResponseEntity.ok("Empleado registrado satisfactoriamente");
+        return ResponseEntity.ok("Administrador registrado satisfactoriamente");
     }
 
     @Operation(summary = "Iniciar sesión")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest request){
-        String login = service.login(request);
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+        LoginResponse login = service.login(request);
         return ResponseEntity.ok(login);
     }
 }

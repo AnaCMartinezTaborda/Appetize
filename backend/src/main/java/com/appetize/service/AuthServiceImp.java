@@ -2,6 +2,7 @@ package com.appetize.service;
 
 import com.appetize.model.dto.request.auth.LoginRequest;
 import com.appetize.model.dto.request.auth.RegisterRequest;
+import com.appetize.model.dto.response.LoginResponse;
 import com.appetize.model.entity.Empleado;
 import com.appetize.model.enums.TipoEnum;
 import com.appetize.repository.EmpleadoRepository;
@@ -42,7 +43,7 @@ public class AuthServiceImp implements AuthService {
         boolean isCedulaExist = empleadoRepository.findByCedula(request.getCedula()).isPresent();
 
         if (!PasswordValidator.isPasswordValid(request.getPassword())) throw new IllegalArgumentException(
-                "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial."
+                "La contraseña debe tener mínimo 8 caracteres, una mayúscula, una minúscula, un número y al menos un carácter especial."
         );
         if (isCedulaExist) throw new DuplicateKeyException("Esta cédula ya se encuentra en uso");
 
@@ -58,7 +59,7 @@ public class AuthServiceImp implements AuthService {
     }
 
     @Override
-    public String login(LoginRequest request) {
+    public LoginResponse login(LoginRequest request) {
         String cedula = request.getCedula();
         String password = request.getPassword();
 
@@ -76,7 +77,7 @@ public class AuthServiceImp implements AuthService {
         empleado.setLastSession(LocalDateTime.now());
         empleadoRepository.save(empleado);
 
-        return jwtUtils.createToken(authentication);
+        return new LoginResponse(jwtUtils.createToken(authentication));
 
     }
 
