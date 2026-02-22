@@ -28,7 +28,7 @@ public class CategoriaIngredienteController {
         return ResponseEntity.ok(service.getCategoriaIngredienteByNombre(nombre));
     }
 
-    @Operation(summary = "El usuario obtiene categorias de ingredientes por coincidencia de nombre")
+    @Operation(summary = "El usuario obtiene categorias de ingredientes por id")
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaIngredienteResponse> getCategoriaIngredienteById(@PathVariable Long id){
         return ResponseEntity.ok(service.getCategoriaIngredienteById(id));
