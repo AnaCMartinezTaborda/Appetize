@@ -7,15 +7,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface InventarioRepository extends JpaRepository<Inventario, Long> {
 
     @Query("SELECT COALESCE(MAX(c.idExterno), 0) FROM inventario c WHERE c.restaurante.id = :restauranteId")
-    Optional<Long> findMaxIdExternoByRestaurante(@Param("restauranteId") String restauranteId);
+    Long findMaxIdExternoByRestaurante(@Param("restauranteId") String restauranteId);
 
     List<Inventario> findByRestauranteIdAndNombreContainingIgnoreCase(String restauranteId, String nombre);
-
     boolean existsByNombreIgnoreCaseAndRestauranteId(String nombre, String restauranteId);
 }

@@ -35,7 +35,6 @@ public class Restaurante {
     @Pattern(regexp = "^3\\d{9}$", message = "Ingrese un numero de teléfono correcto")
     private String telefono;
 
-
     @Column(nullable = false, name = "created_at")
     private LocalDateTime createdAt;
 
