@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 public class CompraResponse {
-    private Long id;
+    private String id;
     private Long idExterno;
     private String proveedor;
     private BigDecimal total;
@@ -29,7 +29,7 @@ public class CompraResponse {
     @AllArgsConstructor
     @Builder
     public static class DetalleCompraResponse {
-        private Long id;
+        private String id;
         private BigDecimal cantidad;
         private BigDecimal costo;
         private InventarioResponse inventario;

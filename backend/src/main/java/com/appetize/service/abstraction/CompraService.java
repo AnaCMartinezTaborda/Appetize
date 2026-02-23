@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 public interface CompraService {
     void createCompra(CompraRequest request);
-    CompraResponse getCompraById(Long id);
+    CompraResponse getCompraById(String id);
     CompraResponse getCompraByIdExterno(Long idExterno);
     Page<CompraResponse> getAllComprasPaged(LocalDateTime desde, LocalDateTime hasta, int page, int size);
 }

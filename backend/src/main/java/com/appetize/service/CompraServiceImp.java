@@ -17,14 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -88,7 +86,7 @@ public class CompraServiceImp implements CompraService {
 
 
     @Override
-    public CompraResponse getCompraById(Long id) {
+    public CompraResponse getCompraById(String id) {
         Compra compra = compraRepository.findById(id).orElseThrow(() -> new NoSuchElementException("La compra no existe"));
         return compraMapper.entityToDto(compra);
     }
@@ -117,7 +115,7 @@ public class CompraServiceImp implements CompraService {
         }
 
         if (desde != null && hasta == null) {
-            hasta = LocalDateTime.now(); // Si solo envían 'desde', usamos la fecha actual como 'hasta'
+            hasta = LocalDateTime.now();
         }
 
         if (desde != null && hasta != null) {

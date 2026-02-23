@@ -28,7 +28,7 @@ public class CompraController {
 
     @Operation(summary = "El Administrador obtiene una compra por su id")
     @GetMapping("/{id}")
-    public ResponseEntity<CompraResponse> getCompraById(@PathVariable Long id){
+    public ResponseEntity<CompraResponse> getCompraById(@PathVariable String id){
         return ResponseEntity.ok(service.getCompraById(id));
     }
 

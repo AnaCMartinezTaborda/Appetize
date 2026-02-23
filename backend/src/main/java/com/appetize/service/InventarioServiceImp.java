@@ -68,13 +68,23 @@ public class InventarioServiceImp implements InventarioService {
         inventarioRepository.save(inventario);
     }
 
+    public List<InventarioResponse> getInventarioByNombre(String nombre) {
+        if (nombre == null || nombre.trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre no puede ser nulo ni vacío");
+        }
 
-    public List<InventarioResponse> getInventarioByNombre(String nombre){
-        List<Inventario> inventarios = inventarioRepository.findByRestauranteIdAndNombreContainingIgnoreCase(securityUtils.getRestauranteId(), nombre);
+        String cedula = SecurityContextHolder.getContext().getAuthentication().getName();
+        Empleado empleado = empleadoRepository.findByCedula(cedula)
+                .orElseThrow(() -> new NoSuchElementException("El empleado no existe"));
+
+        List<Inventario> inventarios = inventarioRepository
+                .findByRestauranteIdAndNombreContainingIgnoreCase(
+                        empleado.getRestaurante().getId(), nombre
+                );
 
         return inventarios.stream()
                 .map(inventarioMapper::entityToDto)
                 .toList();
-
     }
+
 }

@@ -18,8 +18,8 @@ import java.util.List;
 public class Compra {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "id_externo", nullable = false)
     private Long idExterno;
