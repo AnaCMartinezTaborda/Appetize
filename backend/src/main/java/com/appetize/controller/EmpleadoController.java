@@ -3,15 +3,13 @@ package com.appetize.controller;
 import com.appetize.model.dto.request.empleado.EmpleadoRequest;
 import com.appetize.model.dto.request.empleado.UpdatePasswordRequest;
 import com.appetize.model.dto.response.EmpleadoResponse;
+import com.appetize.model.dto.response.PaginatedResponse;
 import com.appetize.service.abstraction.EmpleadoService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/empleados")
@@ -35,10 +33,11 @@ public class EmpleadoController {
 
     @Operation(summary = "El Administrador obtiene todos los empleados del restaurante con paginación")
     @GetMapping("/paged")
-    public ResponseEntity<Page<EmpleadoResponse>> getAllEmpleadoByRestaurantePaged(
+    public ResponseEntity<PaginatedResponse<EmpleadoResponse>> getAllEmpleadoByRestaurantePaged(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
+        page -= 1;
         if (page < 0) page = 0;
         if (size <= 0) size = 10;
         return ResponseEntity.ok(service.getAllEmpleadosByRestaurantePaged(page, size));

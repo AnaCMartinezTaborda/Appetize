@@ -3,10 +3,7 @@ package com.appetize.model.entity;
 import com.appetize.model.enums.TipoInventarioEnum;
 import com.appetize.model.enums.UnidadMedidaEnum;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -21,7 +18,7 @@ public class Inventario {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
-    @Column(name = "id_externo", nullable = false)
+    @Column(name = "id_externo")
     private Long idExterno;
 
     @Column(nullable = false)
@@ -30,14 +27,13 @@ public class Inventario {
     private BigDecimal cantidad;
 
     @Column(nullable = false)
-    private BigDecimal cantidadHistorica = BigDecimal.ZERO;
+    private BigDecimal cantidadHistorica;
 
     @Column(nullable = false)
-    private BigDecimal costoHistorico = BigDecimal.ZERO;
+    private BigDecimal costoHistorico;
 
     @Column(nullable = false)
-    private BigDecimal costoUnitario = BigDecimal.ZERO;
-
+    private BigDecimal costoUnitario;
 
     @Enumerated(EnumType.STRING)
     private TipoInventarioEnum tipoInventario;

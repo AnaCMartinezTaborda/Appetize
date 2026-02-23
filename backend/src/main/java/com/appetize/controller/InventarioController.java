@@ -16,14 +16,14 @@ import java.util.List;
 public class InventarioController {
     private final InventarioService service;
 
-    @Operation(summary = "El Administrador crea un nuevo producto de inventario")
+    @Operation(summary = "El usuario crea un nuevo producto de inventario")
     @PostMapping
     public ResponseEntity<String> createInventario(@RequestBody InventarioRequest request){
         service.createInventario(request);
         return ResponseEntity.ok("Nuevo producto de inventario creado");
     }
 
-    @Operation(summary = "El administrador obtiene productos del inventario por coincidencia de nombre")
+    @Operation(summary = "El usuario obtiene productos del inventario por coincidencia de nombre")
     @GetMapping("/search")
     public ResponseEntity<List<InventarioResponse>> getInventarioByNombre(@RequestParam String nombre){
         return ResponseEntity.ok(service.getInventarioByNombre(nombre));

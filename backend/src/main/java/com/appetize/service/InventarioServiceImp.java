@@ -8,11 +8,13 @@ import com.appetize.model.mapper.InventarioMapper;
 import com.appetize.repository.EmpleadoRepository;
 import com.appetize.repository.InventarioRepository;
 import com.appetize.service.abstraction.InventarioService;
+import com.appetize.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,6 +25,7 @@ public class InventarioServiceImp implements InventarioService {
     private final InventarioRepository inventarioRepository;
     private final EmpleadoRepository empleadoRepository;
     private final InventarioMapper inventarioMapper;
+    private final SecurityUtils securityUtils;
 
     @Override
     @Transactional
@@ -51,11 +54,17 @@ public class InventarioServiceImp implements InventarioService {
         );
 
         if (existe) {
-            throw new IllegalArgumentException("Ya existe un inventario con ese nombre en este restaurante.");
+            throw new IllegalArgumentException("Ya existe un producto de inventario con ese nombre.");
         }
 
         Inventario inventario = inventarioMapper.dtoToEntity(request);
+        inventario.setIdExterno(inventarioRepository.findMaxIdExternoByRestaurante(empleado.getRestaurante().getId()) + 1);
         inventario.setRestaurante(empleado.getRestaurante());
+        inventario.setCantidad(BigDecimal.ZERO);
+        inventario.setCantidadHistorica(BigDecimal.ZERO);
+        inventario.setCostoHistorico(BigDecimal.ZERO);
+        inventario.setCostoUnitario(BigDecimal.ZERO);
+
         inventarioRepository.save(inventario);
     }
 
