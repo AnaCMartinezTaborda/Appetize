@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class Compra {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

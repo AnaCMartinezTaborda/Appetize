@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Empleado {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
