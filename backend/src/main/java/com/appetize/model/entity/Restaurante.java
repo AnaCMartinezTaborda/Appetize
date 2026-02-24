@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Restaurante {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

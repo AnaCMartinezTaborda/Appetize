@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class Inventario {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;

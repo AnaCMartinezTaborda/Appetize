@@ -14,7 +14,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class DetalleCompra {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
